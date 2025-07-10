@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecuperaMail Pro - Selecione seu Provedor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #ff0000;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+
+        .description {
+            font-size: 1em;
+            margin-bottom: 40px;
+            color: #cccccc;
+        }
+
+        .benefits {
+            margin-bottom: 40px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .benefit {
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            color: #e0e0e0;
+        }
+
+        .benefit:before {
+            content: "✓ ";
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .selection-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .providers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .provider {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 30px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .provider:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .provider-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .provider-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .provider-description {
+            font-size: 0.9em;
+            color: #cccccc;
+        }
+
+        .gmail .provider-name { color: #ff4444; }
+        .outlook .provider-name { color: #0078d4; }
+        .yahoo .provider-name { color: #7c3aed; }
+        .outros .provider-name { color: #6b7280; }
+
+        .security {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .security-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #4ade80;
+        }
+
+        .security-item {
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+        }
+
+        .security-item:before {
+            content: "🔒 ";
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2em;
+            }
+            
+            .providers {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .provider {
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        📧 <span id="counter">966</span> Contas Gmail recuperadas hoje
+    </div>
+
+    <div class="container">
+        <h1 class="title">
+            Recuperação<br>
+            Rápida de<br>
+            Conta de Email
+        </h1>
+        
+        <p class="subtitle">Recupere Seu Acesso Rapidamente e com Segurança</p>
+        <p class="description">Selecione o tipo da sua conta abaixo para iniciar o processo</p>
+
+        <div class="benefits">
+            <div class="benefit">Gere uma nova senha</div>
+            <div class="benefit">Receba um código de verificação</div>
+            <div class="benefit">Acesso em menos de 3 minutos</div>
+        </div>
+
+        <h2 class="selection-title">Selecione o Tipo da Sua Conta</h2>
+
+        <div class="providers">
+            <a href="#" class="provider gmail" onclick="redirect('gmail'); return false;">
+                <span class="provider-icon">📧</span>
+                <div class="provider-name">Gmail</div>
+                <div class="provider-description">@gmail.com</div>
+            </a>
+
+            <a href="#" class="provider outlook" onclick="redirect('outlook'); return false;">
+                <span class="provider-icon">📮</span>
+                <div class="provider-name">Hotmail/Outlook</div>
+                <div class="provider-description">@hotmail.com<br>@outlook.com<br>@live.com</div>
+            </a>
+
+            <a href="#" class="provider yahoo" onclick="redirect('yahoo'); return false;">
+                <span class="provider-icon">📬</span>
+                <div class="provider-name">Yahoo Mail</div>
+                <div class="provider-description">@yahoo.com<br>@yahoo.com.br</div>
+            </a>
+
+            <a href="#" class="provider outros" onclick="redirect('outros'); return false;">
+                <span class="provider-icon">📭</span>
+                <div class="provider-name">Outros Provedores</div>
+                <div class="provider-description">Domínios corporativos<br>e outros</div>
+            </a>
+        </div>
+
+        <div class="loading" id="loading">
+            Redirecionando para recuperação...
+        </div>
+
+        <div class="security">
+            <div class="security-title">Processo 100% Seguro</div>
+            <div class="security-item">Dados criptografados e protegidos</div>
+            <div class="security-item">Processo aprovado pelos provedores</div>
+            <div class="security-item">Suporte técnico disponível 24/7</div>
+        </div>
+    </div>
+
+    <script>
+        var counter = 966;
+        
+        function updateCounter() {
+            counter = counter + Math.floor(Math.random() * 3);
+            document.getElementById('counter').textContent = counter;
+        }
+        
+        setInterval(updateCounter, 5000);
+        
+        function redirect(type) {
+            document.getElementById('loading').className = 'loading show';
+            
+            var providers = document.querySelectorAll('.provider');
+            for (var i = 0; i < providers.length; i++) {
+                providers[i].style.opacity = '0.5';
+                providers[i].style.pointerEvents = 'none';
+            }
+            
+            setTimeout(function() {
+                window.location.href = 'https://recuperar-email.online/recuperar/?tipo=' + type;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
+

